@@ -68,11 +68,13 @@ def upload(request):
         file = request.FILES['file'].read()
         fo = io.BytesIO(file)
         fileName= "demo_22082022/" + request.POST['filename']
+        # fileName= "hocvien/media/svideo/" + request.POST['filename']
         if file=="" or fileName=="":
             res = JsonResponse({'data':'Invalid Request'})
             return res
         else:
             s3.upload_fileobj(fo, settings.AWS_STORAGE_BUCKET_NAME, fileName)
+            # s3.upload_fileobj(fo, 'privatemcialion', fileName)
             FileFolder = File()
             FileFolder.existingPath = fileName
             FileFolder.eof = 1
@@ -87,57 +89,17 @@ def upload_multiple_files(request):
         print(request.POST)
         file = request.FILES['file'].read()
         fo = io.BytesIO(file)
-        fileName= "videos/" + request.POST['filename']
-        print(fileName)
-        existingPath = request.POST['existingPath']
-        end = request.POST['end']
-        nextSlice = request.POST['nextSlice']
-        
-        if file=="" or fileName=="" or existingPath=="" or end=="" or nextSlice=="":
+        fileName= "demo_22082022/" + request.POST['filename']
+        if file=="" or fileName=="":
             res = JsonResponse({'data':'Invalid Request'})
             return res
         else:
-            if existingPath == 'null':
-                path = 'fileUploader/media/' + fileName
-                print(path)
-                # with open(path, 'wb+') as destination: 
-                #     destination.write(file)
-                # s3.upload_fileobj(fo, 'mybucket', 'hello.txt')
-                s3.upload_fileobj(fo, settings.AWS_STORAGE_BUCKET_NAME, fileName)
-                # with open(fo, 'wb+') as data:
-                #     s3.upload_fileobj(data, settings.AWS_STORAGE_BUCKET_NAME, fileName)
-                FileFolder = File()
-                FileFolder.existingPath = fileName
-                FileFolder.eof = end
-                FileFolder.name = fileName
-                FileFolder.save()
-                if int(end):
-                    res = JsonResponse({'data':'Uploaded Successfully','existingPath': fileName})
-                else:
-                    res = JsonResponse({'existingPath': fileName})
-                return res
-
-            else:
-                path = 'fileUploader/media/' + existingPath
-                model_id = File.objects.get(existingPath=existingPath)
-                if model_id.name == fileName:
-                    if not model_id.eof:
-                        # with open(path, 'wb+') as destination: 
-                        #     destination.write(file)
-                        # with open(fo, 'wb+') as data:
-                        #     s3.upload_fileobj(data, settings.AWS_STORAGE_BUCKET_NAME, fileName)
-                        s3.upload_fileobj(fo, settings.AWS_STORAGE_BUCKET_NAME, fileName)
-                        if int(end):
-                            model_id.eof = int(end)
-                            model_id.save()
-                            res = JsonResponse({'data':'Uploaded Successfully','existingPath':model_id.existingPath})
-                        else:
-                            res = JsonResponse({'existingPath':model_id.existingPath})    
-                        return res
-                    else:
-                        res = JsonResponse({'data':'EOF found. Invalid request'})
-                        return res
-                else:
-                    res = JsonResponse({'data':'No such file exists in the existingPath'})
-                    return res
+            s3.upload_fileobj(fo, settings.AWS_STORAGE_BUCKET_NAME, fileName)
+            FileFolder = File()
+            FileFolder.existingPath = fileName
+            FileFolder.eof = 1
+            FileFolder.name = fileName
+            FileFolder.save()
+            res = JsonResponse({'data':'Uploaded Successfully'})
+            return res
     return render(request, 'upload_multiple_files.html')

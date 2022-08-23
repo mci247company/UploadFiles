@@ -1,10 +1,10 @@
-class FileUpload {
+class FilesUpload {
     constructor(input) {
         this.input = input
         this.limit_size = 1024 * 1024 * 20
     }
     create_progress_bar() {
-        var progress = `<div class="file-icon">
+        let progress = `<div class="file-icon">
                             <i class="fa fa-file-o" aria-hidden="true"></i>
                         </div>
                         <div class="file-details">
@@ -15,23 +15,35 @@ class FileUpload {
                                 </div>
                             </div>
                         </div>`
-        document.getElementById('uploaded_files').innerHTML = progress
+
+        const DIV = document.createElement("DIV");
+        DIV.innerHTML = progress;       
+        document.getElementById('uploaded_files').appendChild(DIV)
     }
 
     upload() {
-        this.create_progress_bar();
-        this.file = this.input.files[0];
-        this.upload_file();
+        // console.log(this);
+        // console.log(this.input.files.length);
+        for (let i=0; i< this.input.files.length; i++)
+        {   
+            this.create_progress_bar(i);         
+            this.file = this.input.files[i];
+            // console.log(i)
+            // console.log(this.file);
+            this.upload_files(this.file, i);   
+        }
+
     }
 
-    //upload file
-    upload_file() {
+    //upload files
+    upload_files(file, i) {
+        console.log(file);
         var self = this;
         var formData = new FormData();
-        formData.append('file', this.file);
-        formData.append('filename', this.file.name);
-        $('.filename').text(this.file.name)
-        $('.textbox').text("Uploading file")
+        formData.append('file', file);
+        formData.append('filename', file.name);
+        $('.filename').eq(i).text(file.name)
+        $('.textbox').eq(i).text("Uploading file")
         $.ajaxSetup({
             headers: {
                 "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
@@ -46,20 +58,20 @@ class FileUpload {
                         var percent = Math.round((e.loaded / e.total) * 100);
                         if (e.total < self.limit_size){
                             // console.log("OK1")
-                            $('.progress-bar').css('width', percent + '%')
-                            $('.progress-bar').text(percent + '%')    
+                            $('.progress-bar').eq(i).css('width', percent + '%')
+                            $('.progress-bar').eq(i).text(percent + '%')    
                         }
                         else if (percent < 95){
                             // console.log("OK2")
-                            $('.progress-bar').css('width', percent + '%')
-                            $('.progress-bar').text(percent + '%')    
+                            $('.progress-bar').eq(i).css('width', percent + '%')
+                            $('.progress-bar').eq(i).text(percent + '%')    
                         }
                     }
                 });
                 return xhr;
             },
 
-            url: '/upload',
+            url: '/upload-multiple-files',
             type: 'POST',
             dataType: 'json',
             cache: false,
@@ -73,8 +85,8 @@ class FileUpload {
             success: function (res) {
                 // upload complete
                 swal("Good job!", res.data, "success");
-                $('.progress-bar').css('width', "100%")
-                $('.progress-bar').text("100%")
+                $('.progress-bar').eq(i).css('width', "100%")
+                $('.progress-bar').eq(i).text("100%")
                 // alert(res.data)
             }
         });
@@ -84,8 +96,8 @@ class FileUpload {
 (function ($) {
     $('#submit').on('click', (event) => {
         event.preventDefault();
-        var uploader = new FileUpload(document.querySelector('#fileupload'))
-        console.log(document.querySelector('#fileupload'));
+        var uploader = new FilesUpload(document.querySelector('#filesupload'))
+        // console.log(document.querySelector('#filesupload'));
         uploader.upload();
     });
 })(jQuery);
@@ -109,7 +121,8 @@ ondrop = function(evt) {
     evt.preventDefault();
     evt.stopPropagation();
     const files = evt.originalEvent.dataTransfer;
-    var uploader = new FileUpload(files);
+    console.log(files);
+    let uploader = new FilesUpload(files);
     uploader.upload();
 };
 
@@ -118,3 +131,4 @@ $('#dropBox')
     .on('dragenter', ondragenter)
     .on('dragleave', ondragleave)
     .on('drop', ondrop);
+
