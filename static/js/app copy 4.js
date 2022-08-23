@@ -1,8 +1,10 @@
 class FileUpload {
+
     constructor(input) {
         this.input = input
-        this.limit_size = 1024 * 1024 * 20
+        this.max_length = 1024 * 1024 * 100;
     }
+
     create_progress_bar() {
         var progress = `<div class="file-icon">
                             <i class="fa fa-file-o" aria-hidden="true"></i>
@@ -20,18 +22,35 @@ class FileUpload {
 
     upload() {
         this.create_progress_bar();
+        this.initFileUpload();
+    }
+
+    initFileUpload() {
         this.file = this.input.files[0];
-        this.upload_file();
+        this.upload_file(0, null);
     }
 
     //upload file
-    upload_file() {
+    upload_file(start, model_id) {
+        var end;
         var self = this;
+        var existingPath = model_id;
         var formData = new FormData();
-        formData.append('file', this.file);
-        formData.append('filename', this.file.name);
+        var nextChunk = start + this.max_length + 1;
+        var currentChunk = this.file.slice(start, nextChunk);
+        var uploadedChunk = start + currentChunk.size
+        if (uploadedChunk >= this.file.size) {
+            end = 1;
+        } else {
+            end = 0;
+        }
+        formData.append('file', currentChunk)
+        formData.append('filename', this.file.name)
         $('.filename').text(this.file.name)
         $('.textbox').text("Uploading file")
+        formData.append('end', end)
+        formData.append('existingPath', existingPath);
+        formData.append('nextSlice', nextChunk);
         $.ajaxSetup({
             headers: {
                 "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
@@ -41,19 +60,14 @@ class FileUpload {
             xhr: function () {
                 var xhr = new XMLHttpRequest();
                 xhr.upload.addEventListener('progress', function (e) {
-                    // console.log(e, e.total, e.loaded);
                     if (e.lengthComputable) {
-                        var percent = Math.round((e.loaded / e.total) * 100);
-                        if (e.total < self.limit_size){
-                            // console.log("OK1")
-                            $('.progress-bar').css('width', percent + '%')
-                            $('.progress-bar').text(percent + '%')    
+                        if (self.file.size < self.max_length) {
+                            var percent = Math.round((e.loaded / e.total) * 100);
+                        } else {
+                            var percent = Math.round((uploadedChunk / self.file.size) * 100);
                         }
-                        else if (percent < 100){
-                            // console.log("OK2")
-                            $('.progress-bar').css('width', percent + '%')
-                            $('.progress-bar').text(percent + '%')    
-                        }
+                        $('.progress-bar').css('width', percent + '%')
+                        $('.progress-bar').text(percent + '%')
                     }
                 });
                 return xhr;
@@ -67,15 +81,18 @@ class FileUpload {
             contentType: false,
             data: formData,
             error: function (xhr) {
-                swal("Ops!", xhr.statusText, "error");
-                // alert(xhr.statusText);
+                alert(xhr.statusText);
             },
             success: function (res) {
-                // upload complete
-                swal("Good job!", res.data, "success");
-                $('.progress-bar').css('width', "100%")
-                $('.progress-bar').text("100%")
-                // alert(res.data)
+                if (nextChunk < self.file.size) {
+                    // upload file in chunks
+                    existingPath = res.existingPath
+                    self.upload_file(nextChunk, existingPath);
+                } else {
+                    // upload complete
+                    $('.textbox').text(res.data);
+                    alert(res.data)
+                }
             }
         });
     };

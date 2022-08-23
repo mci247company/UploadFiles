@@ -1,7 +1,6 @@
 class FileUpload {
     constructor(input) {
         this.input = input
-        this.limit_size = 1024 * 1024 * 20
     }
     create_progress_bar() {
         var progress = `<div class="file-icon">
@@ -41,19 +40,11 @@ class FileUpload {
             xhr: function () {
                 var xhr = new XMLHttpRequest();
                 xhr.upload.addEventListener('progress', function (e) {
-                    // console.log(e, e.total, e.loaded);
+                    console.log(e, e.total, e.loaded);
                     if (e.lengthComputable) {
                         var percent = Math.round((e.loaded / e.total) * 100);
-                        if (e.total < self.limit_size){
-                            // console.log("OK1")
-                            $('.progress-bar').css('width', percent + '%')
-                            $('.progress-bar').text(percent + '%')    
-                        }
-                        else if (percent < 100){
-                            // console.log("OK2")
-                            $('.progress-bar').css('width', percent + '%')
-                            $('.progress-bar').text(percent + '%')    
-                        }
+                        $('.progress-bar').css('width', percent + '%')
+                        $('.progress-bar').text(percent + '%')
                     }
                 });
                 return xhr;
@@ -73,8 +64,6 @@ class FileUpload {
             success: function (res) {
                 // upload complete
                 swal("Good job!", res.data, "success");
-                $('.progress-bar').css('width', "100%")
-                $('.progress-bar').text("100%")
                 // alert(res.data)
             }
         });

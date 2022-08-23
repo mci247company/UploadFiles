@@ -86,3 +86,14 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# Save media files on Amazon S3 Storage, note media file only
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_S3_ACCESS_KEY_ID = 'AKIA2FGO6GPYGB7YW6FY'
+AWS_S3_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = "publicmci"
+AWS_QUERYSTRING_AUTH = False
+
+# Streaming video rather play video using AWS CloudFront rather than S3 Storage
+AWS_CLOUDFRONT_DOMAIN_NAME = 'd1t3tl7nn69wlp.cloudfront.net'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_CLOUDFRONT_DOMAIN_NAME}'
