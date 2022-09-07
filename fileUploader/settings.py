@@ -3,9 +3,9 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'gx)q!%#ddqj+cnu5x4-a4m+4leq==8sf176a$_(u83$1t&1uj6')
-DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['13.214.214.6']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -48,7 +48,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'fileUploader.wsgi.application'
 
 DATABASES = {
-    'default': {
+     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
