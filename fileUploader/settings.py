@@ -6,7 +6,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'gx)q!%#ddqj+cnu5x4-a4m+4leq==8
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'True'
 
 # ALLOWED_HOSTS = ['13.214.214.6']
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["learnx.mcivietnam.com", "www.learnx.mcivietnam.com", 
+"tiep.mcivietnam.com", "www.tiep.mcivietnam.com"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
