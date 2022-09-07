@@ -52,10 +52,10 @@ def upload_multiple_files(request):
             return res
     return render(request, 'upload_multiple_files.html')
 
-# api book list view
-@api_view(["GET"])
-def get_book_list(request):
-    if request.method == "GET":
-        book_list = [BookSerializer(
-            item).data for item in Books.objects.all().order_by("domain")]
-        return Response(book_list, status=status.HTTP_200_OK)
+# # api book list view
+# @api_view(["GET"])
+# def get_book_list(request):
+#     if request.method == "GET":
+#         book_list = [BookSerializer(
+#             item).data for item in Books.objects.all().order_by("domain")]
+#         return Response(book_list, status=status.HTTP_200_OK)
