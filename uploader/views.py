@@ -4,7 +4,6 @@ from django.conf import settings
 from .models import File
 import boto3
 import io
-# s3 = boto3.client('s3', )
 s3 = boto3.client(
     's3',
     aws_access_key_id = settings.AWS_S3_ACCESS_KEY_ID, 
@@ -52,3 +51,11 @@ def upload_multiple_files(request):
             res = JsonResponse({'data':'Uploaded Successfully'})
             return res
     return render(request, 'upload_multiple_files.html')
+
+# # api book list view
+# @api_view(["GET"])
+# def get_book_list(request):
+#     if request.method == "GET":
+#         book_list = [BookSerializer(
+#             item).data for item in Books.objects.all().order_by("domain")]
+#         return Response(book_list, status=status.HTTP_200_OK)
