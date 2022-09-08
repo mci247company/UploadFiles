@@ -33,7 +33,7 @@ print(PRODUCTION)
 DEBUG = True
 # print(PRODUCTION)
 if PRODUCTION:
-    ALLOWED_HOSTS = ["tieplv.mcivietnam.com", "www.tieplv.mcivietnam.com"]
+    ALLOWED_HOSTS = ["tiep.mcivietnam.com", "www.tiep.mcivietnam.com"]
 else:
     ALLOWED_HOSTS = ['127.0.0.1']
 
