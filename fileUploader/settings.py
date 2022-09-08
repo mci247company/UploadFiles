@@ -1,5 +1,4 @@
 import os
-import re
 import socket
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -12,7 +11,7 @@ print(socket.gethostname())
 
 def check_env():
     for item in PRODUCTION_SERVERS:
-        match = re.match(r"(^." + item + "$)", socket.gethostname())
+        match = item == socket.gethostname()
         if match:
             return True
 
