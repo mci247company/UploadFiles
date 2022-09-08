@@ -29,7 +29,8 @@ print(PRODUCTION)
 # else:
 #     PRODUCTION = False
 
-DEBUG = not PRODUCTION
+# DEBUG = not PRODUCTION
+DEBUG = True
 # print(PRODUCTION)
 if PRODUCTION:
     ALLOWED_HOSTS = ["tieplv.mcivietnam.com", "www.tieplv.mcivietnam.com"]
