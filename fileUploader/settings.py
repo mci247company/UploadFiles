@@ -1,20 +1,37 @@
 import os
+import re
+import socket
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'gx)q!%#ddqj+cnu5x4-a4m+4leq==8sf176a$_(u83$1t&1uj6')
 # DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'True'
 
+PRODUCTION_SERVERS = ['*.mcivietnam.com']
+print(socket.gethostname())
 
-PRODUCTION_SERVERS = ['13.229.143.41',]
-print(os.environ['COMPUTERNAME'])
-if os.environ['COMPUTERNAME'] in PRODUCTION_SERVERS:
+def check_env():
+    for item in PRODUCTION_SERVERS:
+        match = re.match(r"(^." + item + "$)", socket.gethostname())
+        if match:
+            return True
+
+if check_env():
     PRODUCTION = True
 else:
     PRODUCTION = False
 
-DEBUG = not PRODUCTION
 print(PRODUCTION)
+
+# PRODUCTION_SERVERS = ['13.229.143.41',]
+# print(os.environ['COMPUTERNAME'])
+# if os.environ['COMPUTERNAME'] in PRODUCTION_SERVERS:
+#     PRODUCTION = True
+# else:
+#     PRODUCTION = False
+
+DEBUG = not PRODUCTION
+# print(PRODUCTION)
 if PRODUCTION:
     ALLOWED_HOSTS = ["tieplv.mcivietnam.com", "www.tieplv.mcivietnam.com"]
 else:
