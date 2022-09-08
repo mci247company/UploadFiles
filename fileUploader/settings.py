@@ -5,8 +5,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'gx)q!%#ddqj+cnu5x4-a4m+4leq==8sf176a$_(u83$1t&1uj6')
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'True'
 
-# ALLOWED_HOSTS = ['13.214.214.6']
-ALLOWED_HOSTS = ["tiep.mcivietnam.com", "www.tiep.mcivietnam.com"]
+ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ["tiep.mcivietnam.com", "www.tiep.mcivietnam.com"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
