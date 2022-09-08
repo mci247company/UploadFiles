@@ -3,10 +3,22 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'gx)q!%#ddqj+cnu5x4-a4m+4leq==8sf176a$_(u83$1t&1uj6')
-DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'True'
+# DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'True'
 
-ALLOWED_HOSTS = ['*']
-# ALLOWED_HOSTS = ["tiep.mcivietnam.com", "www.tiep.mcivietnam.com"]
+
+PRODUCTION_SERVERS = ['13.229.143.41',]
+print(os.environ['COMPUTERNAME'])
+if os.environ['COMPUTERNAME'] in PRODUCTION_SERVERS:
+    PRODUCTION = True
+else:
+    PRODUCTION = False
+
+DEBUG = not PRODUCTION
+print(PRODUCTION)
+if PRODUCTION:
+    ALLOWED_HOSTS = ["tieplv.mcivietnam.com", "www.tieplv.mcivietnam.com"]
+else:
+    ALLOWED_HOSTS = ['127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
