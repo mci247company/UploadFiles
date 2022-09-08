@@ -4,11 +4,11 @@ import socket
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'gx)q!%#ddqj+cnu5x4-a4m+4leq==8sf176a$_(u83$1t&1uj6')
-# DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'True'
+DEBUG = True
 
+# Check whether website in development or production statge
 PRODUCTION_SERVERS = ['ip-172-31-0-174']
 print(socket.gethostname())
-
 def check_env():
     for item in PRODUCTION_SERVERS:
         match = item == socket.gethostname()
@@ -20,18 +20,6 @@ if check_env():
 else:
     PRODUCTION = False
 
-print(PRODUCTION)
-
-# PRODUCTION_SERVERS = ['13.229.143.41',]
-# print(os.environ['COMPUTERNAME'])
-# if os.environ['COMPUTERNAME'] in PRODUCTION_SERVERS:
-#     PRODUCTION = True
-# else:
-#     PRODUCTION = False
-
-# DEBUG = not PRODUCTION
-DEBUG = True
-# print(PRODUCTION)
 if PRODUCTION:
     ALLOWED_HOSTS = ["tiep.mcivietnam.com", "www.tiep.mcivietnam.com"]
 else:
