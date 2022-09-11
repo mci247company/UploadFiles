@@ -7,7 +7,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'gx)q!%#ddqj+cnu5x4-a4m+4leq==8
 DEBUG = True
 
 # Check whether website in development or production statge
-PRODUCTION_SERVERS = ['ip-172-31-0-174']
+PRODUCTION_SERVERS = ['ip-172-31-47-54']
 print(socket.gethostname())
 def check_env():
     for item in PRODUCTION_SERVERS:
@@ -21,7 +21,7 @@ else:
     PRODUCTION = False
 
 if PRODUCTION:
-    ALLOWED_HOSTS = ["tiep.mcivietnam.com", "www.tiep.mcivietnam.com"]
+    ALLOWED_HOSTS = ["dat.mcivietnam.com", "www.dat.mcivietnam.com"]
 else:
     ALLOWED_HOSTS = ['127.0.0.1']
 
