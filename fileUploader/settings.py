@@ -3,17 +3,21 @@ import socket
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'gx)q!%#ddqj+cnu5x4-a4m+4leq==8sf176a$_(u83$1t&1uj6')
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY', 'gx)q!%#ddqj+cnu5x4-a4m+4leq==8sf176a$_(u83$1t&1uj6')
 DEBUG = True
 
 # Check whether website in development or production statge
 PRODUCTION_SERVERS = ['ip-172-31-47-54']
 print(socket.gethostname())
+
+
 def check_env():
     for item in PRODUCTION_SERVERS:
         match = item == socket.gethostname()
         if match:
             return True
+
 
 if check_env():
     PRODUCTION = True
@@ -21,9 +25,10 @@ else:
     PRODUCTION = False
 
 if PRODUCTION:
-    ALLOWED_HOSTS = ["dat.mcivietnam.com", "www.dat.mcivietnam.com"]
+    ALLOWED_HOSTS = ["beta.mcivietnam.com", "www.beta.mcivietnam.com"]
+    import pro
 else:
-    ALLOWED_HOSTS = ['127.0.0.1']
+    from .dev import *
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -50,7 +55,7 @@ ROOT_URLCONF = 'fileUploader.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -66,7 +71,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'fileUploader.wsgi.application'
 
 DATABASES = {
-     'default': {
+    'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
