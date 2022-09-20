@@ -105,24 +105,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-# thay đổi phụ thuộc vào debug mode - Tiệp
+
 STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-if DEBUG:
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
-# STATIC_URL = '/static/'
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static')
-# ]
-
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# MEDIA_URL = '/media/'
+MEDIA_URL = '/media/'
 
 # Save media files on Amazon S3 Storage, note media file only
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
