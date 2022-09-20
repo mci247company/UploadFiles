@@ -8,9 +8,8 @@ SECRET_KEY = os.environ.get(
 DEBUG = True
 
 # Check whether website in development or production statge
-PRODUCTION_SERVERS = ['ip-172-31-47-54']
+PRODUCTION_SERVERS = ['ip-172-31-47-54', 'vps-22-09-16-11-11-39-180']
 print(socket.gethostname())
-
 
 def check_env():
     for item in PRODUCTION_SERVERS:
@@ -18,17 +17,18 @@ def check_env():
         if match:
             return True
 
-
 if check_env():
     PRODUCTION = True
 else:
     PRODUCTION = False
 
+print(PRODUCTION)
+
 if PRODUCTION:
-    ALLOWED_HOSTS = ["beta.mcivietnam.com", "www.beta.mcivietnam.com"]
-    import pro
+    ALLOWED_HOSTS = ["beta.mcivietnam.com", "www.beta.mcivietnam.com", 
+    "tiep.mcivietnam.com", "www.tiep.mcivietnam.com"]
 else:
-    from .dev import *
+    ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
